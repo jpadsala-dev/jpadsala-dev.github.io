@@ -1,0 +1,96 @@
+---
+import Base from '../../layouts/Base.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+import Icon from '../../components/Icon.astro';
+import { projects, type Project } from '../../data/projects';
+
+export function getStaticPaths() {
+  return projects.map((project) => ({ params: { slug: project.slug }, props: { project } }));
+}
+
+const { project: p } = Astro.props as { project: Project };
+const links = [
+  { label: 'Source code', href: p.links?.source },
+  { label: 'Live demo', href: p.links?.demo },
+  { label: 'Google Play', href: p.links?.playStore },
+  { label: 'App Store', href: p.links?.appStore },
+].filter((l): l is { label: string; href: string } => Boolean(l.href));
+---
+
+<Base title={`${p.title} — Jay Padsala`} description={p.tagline}>
+  <Nav home={false} />
+  <main id="main">
+    <section class="head">
+      <div class="wrap">
+        <a class="back label-md" href="/#work">← All projects</a>
+        <p class="label-md meta">{p.year} · Personal project</p>
+        <h1 class="display-lg">{p.title}</h1>
+        <p class="body-md lead">{p.tagline}</p>
+        {
+          links.length > 0 && (
+            <div class="links">
+              {links.map((l, i) => (
+                <a class={`btn ${i === 0 ? 'btn-forest' : 'btn-glass'}`} href={l.href} target="_blank" rel="noopener">
+                  {l.label} <Icon name="arrow-up-right" size={16} />
+                </a>
+              ))}
+            </div>
+          )
+        }
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap body">
+        {p.image && <img class="shot" src={p.image} alt={`Screenshot of ${p.title}`} />}
+        <div class="cols">
+          <div class="main">
+            <h2 class="title">About</h2>
+            <p class="body-md">{p.summary}</p>
+            {
+              p.highlights.length > 0 && (
+                <>
+                  <h2 class="title">Highlights</h2>
+                  <ul class="hl">
+                    {p.highlights.map((h) => (
+                      <li>
+                        <span class="ok"><Icon name="check" size={20} /></span>
+                        {h}
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )
+            }
+          </div>
+          <aside>
+            <h2 class="label-md muted">Built with</h2>
+            <ul class="chips">{p.stack.map((s) => <li>{s}</li>)}</ul>
+          </aside>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Base>
+
+<style>
+  .head { background: var(--hero-bg); color: var(--hero-ink); padding-block: 40px clamp(56px, 7vw, 88px); }
+  .back { display: inline-flex; align-items: center; min-height: 44px; text-decoration: none; }
+  .meta { margin: 32px 0 20px; }
+  .lead { margin: 24px 0 0; max-width: 680px; }
+  .links { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+  .shot { width: 100%; border-radius: var(--r-card); box-shadow: var(--hairline); margin-bottom: 56px; }
+  .cols { display: flex; flex-wrap: wrap; gap: var(--gap) 80px; }
+  .main { flex: 999 1 520px; min-width: 0; max-width: 760px; }
+  .main .title { margin: 0 0 16px; }
+  .main .body-md { margin: 0 0 48px; }
+  aside { flex: 1 1 260px; }
+  aside h2 { margin: 0 0 12px; }
+  .hl { margin: 0; padding: 0; list-style: none; }
+  .hl li { display: flex; gap: 12px; padding: 16px 0; border-top: 1px solid var(--rule); font-size: 18px; }
+  .ok { color: var(--accent-positive); flex: none; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
+  .chips li { padding: 8px 14px; border-radius: var(--r-control); background: var(--glass); font-weight: 600; font-size: 15px; }
+</style>

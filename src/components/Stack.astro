@@ -1,0 +1,31 @@
+---
+import { stack } from '../data/profile';
+---
+
+<section id="stack" class="section" aria-labelledby="stack-title">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow label-md">04 · Stack</span>
+        <h2 id="stack-title" class="headline-md">What I reach for</h2>
+      </div>
+    </div>
+    <dl>
+      {
+        stack.map((s) => (
+          <div class="row">
+            <dt class="label-md">{s.group}</dt>
+            <dd>{s.items}</dd>
+          </div>
+        ))
+      }
+    </dl>
+  </div>
+</section>
+
+<style>
+  dl { margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 460px), 1fr)); column-gap: var(--gap); }
+  .row { display: flex; flex-wrap: wrap; gap: 4px 24px; padding: 20px 0; border-top: 1px solid var(--rule); }
+  dt { flex: 0 0 170px; color: var(--text-secondary); }
+  dd { flex: 1 1 220px; margin: 0; font-size: 17px; }
+</style>

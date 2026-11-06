@@ -1,0 +1,52 @@
+---
+import Icon from './Icon.astro';
+import { profile } from '../data/profile';
+---
+
+<section id="contact" class="section contact" aria-labelledby="contact-title">
+  <div class="wrap">
+    <span class="eyebrow label-md">05 · Contact</span>
+    <h2 id="contact-title" class="display-lg">Need a Flutter app built, or shipped?</h2>
+    <p class="body-md muted lead">
+      Email is the fastest way to reach me. I'm based in {profile.location}.
+    </p>
+    <div class="actions">
+      <a class="btn btn-forest btn-xl" href={`mailto:${profile.email}`}>
+        <Icon name="mail" size={22} />
+        <span class="addr">{profile.email}</span>
+      </a>
+      <div class="secondary">
+        {
+          profile.links.linkedin && (
+            <a class="btn btn-glass" href={profile.links.linkedin} rel="me noopener" target="_blank">
+              LinkedIn <Icon name="arrow-up-right" size={16} />
+            </a>
+          )
+        }
+        {
+          profile.links.github && (
+            <a class="btn btn-glass" href={profile.links.github} rel="me noopener" target="_blank">
+              GitHub <Icon name="arrow-up-right" size={16} />
+            </a>
+          )
+        }
+        <a class="btn btn-glass" href={profile.resume} download>
+          Résumé (PDF) <Icon name="download" size={16} />
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .contact { padding-block: clamp(24px, 4vw, 56px) clamp(80px, 10vw, 140px); }
+  .display-lg { max-width: 1100px; }
+  .lead { margin: 28px 0 0; }
+  .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 24px; margin-top: 44px; }
+  .btn-xl { max-width: 100%; }
+  .addr { overflow: hidden; text-overflow: ellipsis; }
+  .secondary { display: flex; flex-wrap: wrap; gap: 10px; }
+  @media (max-width: 520px) {
+    .btn-xl { width: 100%; min-height: 60px; font-size: 15px; padding-inline: 18px; }
+  }
+</style>

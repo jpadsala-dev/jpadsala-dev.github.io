@@ -1,0 +1,35 @@
+---
+import { profile } from '../data/profile';
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="top">
+      <a class="wordmark" href="/">jay padsala</a>
+      <nav aria-label="Footer">
+        <ul>
+          <li><a href="/#work">Work</a></li>
+          <li><a href="/#approach">Approach</a></li>
+          <li><a href="/#experience">Experience</a></li>
+          <li><a href="/#stack">Stack</a></li>
+          <li><a href="/#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+    <p class="legal">
+      © {year} {profile.name}. {profile.role}, {profile.location}. Apps named under Experience
+      were built for my employers and their clients and belong to them.
+    </p>
+  </div>
+</footer>
+
+<style>
+  .footer { background: var(--footer-tint); padding-block: 48px 40px; }
+  .top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px 40px; padding-bottom: 28px; border-bottom: 1px solid var(--rule); }
+  .wordmark { font-family: var(--font-display); font-weight: 900; font-stretch: 75%; font-size: clamp(40px, 4vw, 56px); line-height: 1; text-decoration: none; color: var(--brand-ink); }
+  ul { display: flex; flex-wrap: wrap; gap: 4px 8px; margin: 0; padding: 0; list-style: none; }
+  ul a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 10px; font-size: 16px; color: var(--text-secondary); }
+  ul a:hover { color: var(--text-primary); }
+  .legal { margin: 24px 0 0; max-width: 760px; color: var(--text-secondary); }
+</style>

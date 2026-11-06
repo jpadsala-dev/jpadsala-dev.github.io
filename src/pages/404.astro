@@ -1,0 +1,20 @@
+---
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+---
+
+<Base title="Page not found — Jay Padsala">
+  <Nav home={false} />
+  <main id="main" class="nf">
+    <div class="wrap">
+      <p class="label-md">404</p>
+      <h1 class="display-lg">This page didn't make it through review.</h1>
+      <a class="btn btn-forest" href="/">Back to the home page</a>
+    </div>
+  </main>
+</Base>
+
+<style>
+  .nf { background: var(--hero-bg); color: var(--hero-ink); min-height: calc(100vh - 84px); padding-block: 80px; }
+  .display-lg { margin: 16px 0 40px; max-width: 900px; }
+</style>

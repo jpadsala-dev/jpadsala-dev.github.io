@@ -1,0 +1,71 @@
+---
+import { experience, education } from '../data/profile';
+---
+
+<section id="experience" class="section forest" aria-labelledby="experience-title">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow label-md">03 · Experience</span>
+        <h2 id="experience-title" class="headline-md">Four years, four teams</h2>
+      </div>
+      <p class="body-md">From intern to owning the release pipeline for 15+ production apps.</p>
+    </div>
+
+    <ol class="jobs">
+      {
+        experience.map((j) => (
+          <li class="job">
+            <div class="meta label-md">
+              <span>{j.dates}</span>
+              <span>{j.place}</span>
+            </div>
+            <div class="body">
+              <h3 class="title">{j.role}</h3>
+              <p class="company">{j.company}</p>
+              <ul class="bullets">
+                {j.bullets.map((b) => <li>{b}</li>)}
+              </ul>
+              {j.companyWork && (
+                <div class="work">
+                  <p class="work-label">Company &amp; client apps I worked on at {j.company}</p>
+                  <ul class="chips">
+                    {j.companyWork.map((w) => <li>{w}</li>)}
+                  </ul>
+                </div>
+              )}
+            </div>
+          </li>
+        ))
+      }
+      <li class="job">
+        <div class="meta label-md"><span>{education.dates}</span><span>Education</span></div>
+        <div class="body">
+          <h3 class="title">{education.degree}</h3>
+          <p class="company">{education.school}</p>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<style>
+  .forest { background: var(--band-bg); color: var(--on-forest); }
+  .forest .eyebrow { color: var(--on-forest-muted); }
+  .forest .headline-md { color: var(--accent-lime); }
+  .section-head p { color: var(--on-forest); }
+
+  .jobs { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--rule-forest); }
+  .job { display: flex; flex-wrap: wrap; gap: 16px clamp(24px, 5vw, 80px); padding: 40px 0; border-bottom: 1px solid var(--rule-forest); }
+  .meta { flex: 1 1 200px; display: flex; flex-direction: column; color: var(--on-forest-muted); }
+  .body { flex: 999 1 520px; min-width: 0; max-width: 860px; }
+  .title { color: var(--accent-lime); }
+  .company { margin: 8px 0 0; font-size: 18px; font-weight: 600; color: var(--band-strong); }
+  .bullets { margin: 20px 0 0; padding-left: 20px; display: flex; flex-direction: column; gap: 10px; font-size: 17px; line-height: 1.5; }
+  .bullets li::marker { color: var(--accent-lime); }
+
+  .work { margin-top: 28px; }
+  .work-label { margin: 0 0 12px; font-size: 14px; font-weight: 600; color: var(--on-forest-muted); }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
+  .chips li { padding: 8px 14px; border-radius: var(--r-control); background: rgba(159, 232, 112, 0.12); color: var(--on-forest); font-size: 14px; font-weight: 500; }
+</style>

@@ -1,0 +1,87 @@
+---
+import Icon from './Icon.astro';
+import { projects } from '../data/projects';
+---
+
+<section id="work" class="section" aria-labelledby="work-title">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow label-md">01 · Personal work</span>
+        <h2 id="work-title" class="headline-md">Things I build on my own time</h2>
+      </div>
+      <p class="body-md muted">
+        Demo apps I can share in full: source, a short write-up and a build you can try.
+      </p>
+    </div>
+
+    {
+      projects.length === 0 ? (
+        <div class="empty">
+          <div>
+            <p class="title">The first demos are on the workbench.</p>
+            <p class="body-md muted">
+              I'm building personal Flutter projects to publish here with their source code. Until
+              they land, my professional work (built for employers and their clients) is under
+              Experience.
+            </p>
+          </div>
+          <a class="btn btn-outline" href="#experience">
+            See experience <Icon name="arrow-right" size={18} />
+          </a>
+        </div>
+      ) : (
+        <ul class="grid">
+          {projects.map((p) => (
+            <li class="card">
+              {p.image ? (
+                <img src={p.image} alt="" loading="lazy" />
+              ) : (
+                <div class="media" aria-hidden="true">{p.title.slice(0, 1)}</div>
+              )}
+              <span class="label-md muted">{p.year} · {p.stack.slice(0, 3).join(' · ')}</span>
+              <h3 class="title">{p.title}</h3>
+              <p class="muted">{p.tagline}</p>
+              {p.highlights[0] && (
+                <p class="hl">
+                  <span class="ok"><Icon name="check" size={18} /></span>
+                  {p.highlights[0]}
+                </p>
+              )}
+              <a class="btn btn-outline btn-sm more" href={`/projects/${p.slug}`}>
+                Read the write-up<span class="sr"> about {p.title}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </div>
+</section>
+
+<style>
+  .empty {
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+    gap: 24px 40px; padding: clamp(28px, 4vw, 48px);
+    background: var(--surface-muted); border-radius: var(--r-card);
+  }
+  .empty > div { flex: 1 1 420px; max-width: 760px; }
+  .empty p { margin: 0; }
+  .empty .body-md { margin-top: 16px; }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); gap: 30px; margin: 0; padding: 0; list-style: none; }
+  .card {
+    display: flex; flex-direction: column; gap: 12px; padding: 40px 30px 30px;
+    border-radius: var(--r-card); box-shadow: var(--hairline); background: var(--card-bg);
+  }
+  .card img, .media { aspect-ratio: 16 / 10; width: 100%; object-fit: cover; border-radius: 18px; margin-bottom: 12px; }
+  .media {
+    display: grid; place-items: center; background: var(--surface-muted);
+    font-family: var(--font-display); font-weight: 900; font-stretch: 75%; font-size: 96px; color: var(--brand-ink);
+  }
+  .card p { margin: 0; }
+  .hl { display: flex; gap: 8px; align-items: flex-start; font-size: 16px; }
+  .ok { color: var(--accent-positive); display: inline-flex; margin-top: 2px; }
+  .more { align-self: flex-start; margin-top: auto; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+</style>

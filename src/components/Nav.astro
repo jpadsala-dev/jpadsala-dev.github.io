@@ -1,0 +1,56 @@
+---
+import { profile } from '../data/profile';
+
+interface Props {
+  /** Links point at home-page anchors; on sub-pages prefix them with "/". */
+  home?: boolean;
+}
+const { home = true } = Astro.props;
+const p = home ? '' : '/';
+const links = [
+  { href: `${p}#work`, label: 'Work' },
+  { href: `${p}#approach`, label: 'Approach' },
+  { href: `${p}#experience`, label: 'Experience' },
+  { href: `${p}#stack`, label: 'Stack' },
+];
+---
+
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a class="wordmark" href="/" aria-label={`${profile.name}, home`}>jay padsala</a>
+    <nav aria-label="Primary">
+      <ul>
+        {links.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+      </ul>
+    </nav>
+    <div class="nav-actions">
+      <a class="btn btn-glass btn-sm hide-sm" href={profile.resume} download>Résumé</a>
+      <a class="btn btn-forest btn-sm" href={`${p}#contact`}>Get in touch</a>
+    </div>
+  </div>
+</header>
+
+<style>
+  .nav { background: var(--hero-bg); }
+  .nav-inner { display: flex; align-items: center; gap: 24px; min-height: 84px; }
+  .wordmark {
+    font-family: var(--font-display); font-weight: 900; font-stretch: 75%;
+    font-size: clamp(34px, 3.4vw, 46px); line-height: 1; letter-spacing: -0.005em; text-decoration: none;
+    color: var(--hero-ink); margin-right: auto;
+  }
+  ul { display: flex; gap: 4px; margin: 0; padding: 0; list-style: none; }
+  ul a {
+    display: inline-flex; align-items: center; min-height: 44px; padding: 0 14px;
+    border-radius: var(--r-control); font-weight: 600; font-size: 16px;
+    text-decoration: none; color: var(--hero-ink);
+  }
+  ul a:hover { background: var(--glass); }
+  .nav-actions { display: flex; gap: 8px; }
+
+  @media (max-width: 860px) {
+    nav { display: none; }
+  }
+  @media (max-width: 420px) {
+    .hide-sm { display: none; }
+  }
+</style>

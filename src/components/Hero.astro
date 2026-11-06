@@ -1,0 +1,119 @@
+---
+import Icon from './Icon.astro';
+import { profile, releaseCard as rc, skillRail } from '../data/profile';
+
+---
+
+<section class="hero" aria-labelledby="hero-title">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <p class="name">{profile.name}</p>
+      <p class="label-md where">{profile.role} · {profile.location}</p>
+      <h1 id="hero-title" class="display-lg">Flutter apps, shipped to both stores.</h1>
+      <p class="body-md lead">{profile.intro}</p>
+      <div class="ctas">
+        <a class="btn btn-forest" href="#experience">See my experience <Icon name="arrow-right" size={18} /></a>
+        <a class="btn btn-glass" href={profile.resume} download><Icon name="download" size={18} /> Download résumé</a>
+      </div>
+    </div>
+
+    <aside class="card" aria-label="At a glance">
+      <div class="row">
+        <div>
+          <span class="row-label">Platforms</span>
+          <span class="row-value">{rc.platforms}</span>
+        </div>
+        <span class="chip">One codebase</span>
+      </div>
+
+      <p class="rate">Dart &amp; Flutter · {rc.experience} in production</p>
+
+      <div class="row field">
+        <div>
+          <span class="row-label">Apps released</span>
+          <span class="row-num">{rc.appsReleased}</span>
+        </div>
+        <span class="row-note">{rc.appsReleasedNote}</span>
+      </div>
+
+      <div class="banner">
+        <span class="tick"><Icon name="check" size={16} /></span>
+        <span><strong>{rc.crashFree}</strong> {rc.crashFreeNote}</span>
+      </div>
+
+      <div class="row field">
+        <div>
+          <span class="row-label">Release pipeline</span>
+          <span class="row-value">Signing → TestFlight → Store review</span>
+        </div>
+      </div>
+
+      <a class="btn btn-forest send" href={`mailto:${profile.email}`}><Icon name="mail" size={18} /> Email me</a>
+      <a class="card-link" href="#contact">Other ways to reach me</a>
+    </aside>
+  </div>
+
+  <div class="rail-wrap">
+    <ul class="rail" aria-label="Tools I work with">
+      {skillRail.map((s) => <li>{s}</li>)}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .hero { background: var(--hero-bg); color: var(--hero-ink); padding-bottom: 28px; }
+  .hero-grid {
+    display: flex; flex-wrap: wrap; align-items: center;
+    gap: var(--gap) clamp(40px, 6vw, 96px);
+    padding-block: clamp(48px, 7vw, 96px) clamp(48px, 6vw, 72px);
+  }
+  .hero-copy { flex: 999 1 520px; min-width: 0; }
+  .name {
+    margin: 0; font-family: var(--font-display); font-weight: 900; font-stretch: 75%;
+    font-size: clamp(40px, 5.2vw, 76px); line-height: 0.9; letter-spacing: -0.005em;
+  }
+  .where { display: inline-block; margin: 14px 0 32px; padding: 6px 14px; border-radius: var(--r-control); background: var(--hero-chip-bg); }
+  .lead { margin: 28px 0 0; max-width: 620px; color: var(--hero-ink-soft); }
+  .ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 36px; }
+
+  /* calculator-style panel: flat, white, inset-hairline rows */
+  .card {
+    flex: 1 1 360px; max-width: 480px; min-width: 0;
+    background: var(--card-bg); color: var(--text-primary);
+    padding: 24px; display: flex; flex-direction: column; gap: 12px;
+  }
+  .row { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 16px; }
+  .row > div { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .field { box-shadow: var(--hairline-inset); border-radius: var(--r-hairline); }
+  .row-label { font-size: 14px; color: var(--text-tertiary); }
+  .row-value { font-weight: 600; font-size: 18px; }
+  .row-num { font-family: var(--font-display); font-weight: 900; font-stretch: 75%; font-size: 48px; line-height: 0.9; }
+  .row-note { font-size: 14px; color: var(--text-secondary); text-align: right; max-width: 170px; }
+  .chip { background: var(--glass); border-radius: var(--r-control); padding: 8px 14px; font-size: 14px; font-weight: 600; white-space: nowrap; }
+  .rate { margin: 0; align-self: flex-start; padding: 6px 12px; border-radius: var(--r-control); background: var(--surface-muted); font-size: 14px; font-weight: 600; }
+  .banner {
+    display: flex; gap: 10px; align-items: flex-start; padding: 12px 16px;
+    background: var(--surface-hero); color: var(--surface-forest); font-size: 15px;
+  }
+  .tick { display: inline-flex; padding: 3px; border-radius: 50%; background: var(--surface-forest); color: var(--accent-lime); margin-top: 1px; }
+  .send { width: 100%; margin-top: 8px; }
+  .card-link { align-self: center; font-size: 15px; font-weight: 600; padding: 10px; }
+
+  .rail-wrap { overflow-x: auto; scrollbar-width: none; }
+  .rail-wrap::-webkit-scrollbar { display: none; }
+  /* Full-width track (not capped at --max) so the last chip keeps its end padding when scrolled. */
+  .rail {
+    display: flex; gap: 10px; margin: 0; list-style: none;
+    width: max-content; min-width: 100%; box-sizing: border-box; padding-block: 4px;
+    padding-inline: max(var(--gutter), calc((100vw - var(--max)) / 2 + var(--gutter)));
+  }
+  .rail li {
+    border-radius: var(--r-control); padding: 10px 18px;
+    background: var(--hero-chip-bg); font-weight: 600; font-size: 15px; white-space: nowrap;
+  }
+
+  @media (max-width: 480px) {
+    .card { padding: 16px; }
+    .row-note { display: none; }
+  }
+</style>

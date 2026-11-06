@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.astro/
+.env
+.env.*
+.DS_Store
+.claude/settings.local.json
+
+# Master résumé contains a phone number — keep it local. The public copy is public/jay-padsala-resume.pdf
+Jay Padsala - Flutter Developer Resume.pdf

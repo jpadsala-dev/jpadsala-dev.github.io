@@ -1,0 +1,64 @@
+---
+import Icon from './Icon.astro';
+import { principles, releaseCard as rc } from '../data/profile';
+---
+
+<section id="approach" class="section approach" aria-labelledby="approach-title">
+  <div class="wrap grid">
+    <div class="media" aria-hidden="true">
+      <span class="badge">Firebase Crashlytics</span>
+      <span class="big">{rc.crashFree}</span>
+      <span class="cap">crash-free users across the apps I've released at work</span>
+    </div>
+
+    <div class="copy">
+      <span class="eyebrow label-md">02 · Approach</span>
+      <h2 id="approach-title" class="headline-md">Built to last past launch day</h2>
+      <p class="body-md muted intro">
+        Shipping is the start. These are the habits that keep an app maintainable, fast and in the stores.
+      </p>
+      <ul class="list">
+        {
+          principles.map((p) => (
+            <li>
+              <span class="ok"><Icon name="check" size={20} /></span>
+              <div>
+                <h3>{p.title}</h3>
+                <p class="muted">{p.body}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+      <a class="btn btn-lime" href="#experience">See where I've done this <Icon name="arrow-right" size={18} /></a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .approach { background: var(--surface-muted); }
+  .grid { display: flex; flex-wrap: wrap; gap: var(--gap) clamp(40px, 6vw, 96px); align-items: flex-start; }
+  .media {
+    position: sticky; top: 32px; flex: 1 1 420px; min-width: 0; min-height: clamp(300px, 34vw, 440px); container-type: inline-size;
+    display: flex; flex-direction: column; justify-content: flex-end; gap: 12px;
+    padding: clamp(28px, 4vw, 48px); border-radius: 24px;
+    background: var(--hero-bg); color: var(--hero-ink); overflow: hidden;
+  }
+  .badge {
+    position: absolute; top: 24px; left: 24px;
+    padding: 8px 16px; border-radius: var(--r-control);
+    background: var(--hero-chip-bg); color: var(--hero-ink);
+    font-weight: 600; font-size: 15px; backdrop-filter: blur(8px);
+  }
+  .big { font-family: var(--font-display); font-weight: 900; font-stretch: 75%; font-size: clamp(64px, 26cqi, 168px); line-height: 0.8; white-space: nowrap; }
+  .cap { color: var(--hero-ink-soft); font-size: 18px; max-width: 320px; }
+
+  .copy { flex: 999 1 480px; min-width: 0; }
+  .intro { margin: 24px 0 8px; max-width: 560px; }
+  .list { margin: 0 0 36px; padding: 0; list-style: none; }
+  .list li { display: flex; gap: 16px; padding: 22px 0; border-bottom: 1px solid var(--rule); }
+  .list li:last-child { border-bottom: 0; }
+  .ok { color: var(--accent-positive); flex: none; margin-top: 2px; }
+  h3 { margin: 0 0 6px; font-size: 19px; font-weight: 600; line-height: 1.3; }
+  .list p { margin: 0; font-size: 16px; }
+</style>
