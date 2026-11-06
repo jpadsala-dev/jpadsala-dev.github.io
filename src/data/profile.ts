@@ -12,7 +12,7 @@ export const profile = {
     github: '', // add your GitHub profile URL to show the link
   },
   intro:
-    "I've spent 4+ years building iOS and Android apps with Flutter and Dart. I care about clean architecture, smooth UI and the unglamorous part: getting builds through store review and keeping them crash-free once they're out.",
+    '4+ years building iOS and Android apps in Dart. I focus on clean architecture, smooth UI and the unglamorous part: getting builds through review and keeping them crash-free.',
 };
 
 /** Hero "release card" rows. All figures come from the résumé. */
@@ -58,6 +58,8 @@ export type Job = {
   bullets: string[];
   /** Apps built for the employer or its clients. Never shown as personal work. */
   companyWork?: string[];
+  /** Trailing summary chip after companyWork, e.g. "15+ more". */
+  companyWorkMore?: string;
 };
 
 export const experience: Job[] = [
@@ -81,6 +83,7 @@ export const experience: Job[] = [
       'AI chatbot',
       'Twitch scheduler',
     ],
+    companyWorkMore: '15+ more',
   },
   {
     role: 'Senior Flutter Developer',

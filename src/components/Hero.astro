@@ -7,9 +7,9 @@ import { profile, releaseCard as rc, skillRail } from '../data/profile';
 <section class="hero" aria-labelledby="hero-title">
   <div class="wrap hero-grid">
     <div class="hero-copy">
-      <p class="name">{profile.name}</p>
       <p class="label-md where">{profile.role} · {profile.location}</p>
-      <h1 id="hero-title" class="display-lg">Flutter apps, shipped to both stores.</h1>
+      <h1 id="hero-title" class="display-lg">{profile.name}</h1>
+      <p class="tagline">Flutter apps, shipped to both stores.</p>
       <p class="body-md lead">{profile.intro}</p>
       <div class="ctas">
         <a class="btn btn-forest" href="#experience">See my experience <Icon name="arrow-right" size={18} /></a>
@@ -54,9 +54,15 @@ import { profile, releaseCard as rc, skillRail } from '../data/profile';
   </div>
 
   <div class="rail-wrap">
-    <ul class="rail" aria-label="Tools I work with">
-      {skillRail.map((s) => <li>{s}</li>)}
-    </ul>
+    <div class="rail-track">
+      <ul class="rail" aria-label="Tools I work with">
+        {skillRail.map((s) => <li>{s}</li>)}
+      </ul>
+      <!-- duplicate set makes the loop seamless; hidden from assistive tech -->
+      <ul class="rail rail-dup" aria-hidden="true">
+        {skillRail.map((s) => <li>{s}</li>)}
+      </ul>
+    </div>
   </div>
 </section>
 
@@ -68,12 +74,12 @@ import { profile, releaseCard as rc, skillRail } from '../data/profile';
     padding-block: clamp(48px, 7vw, 96px) clamp(48px, 6vw, 72px);
   }
   .hero-copy { flex: 999 1 520px; min-width: 0; }
-  .name {
-    margin: 0; font-family: var(--font-display); font-weight: 900; font-stretch: 75%;
-    font-size: clamp(40px, 5.2vw, 76px); line-height: 0.9; letter-spacing: -0.005em;
+  .where { margin: 0 0 20px; color: var(--hero-ink-soft); }
+  .tagline {
+    margin: 24px 0 0; font-size: clamp(22px, 2.4vw, 30px); font-weight: 600;
+    line-height: 1.2; letter-spacing: -0.01em;
   }
-  .where { display: inline-block; margin: 14px 0 32px; padding: 6px 14px; border-radius: var(--r-control); background: var(--hero-chip-bg); }
-  .lead { margin: 28px 0 0; max-width: 620px; color: var(--hero-ink-soft); }
+  .lead { margin: 16px 0 0; max-width: 540px; color: var(--hero-ink-soft); }
   .ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 36px; }
 
   /* calculator-style panel: flat, white, inset-hairline rows */
@@ -99,13 +105,34 @@ import { profile, releaseCard as rc, skillRail } from '../data/profile';
   .send { width: 100%; margin-top: 8px; }
   .card-link { align-self: center; font-size: 15px; font-weight: 600; padding: 10px; }
 
-  .rail-wrap { overflow-x: auto; scrollbar-width: none; }
-  .rail-wrap::-webkit-scrollbar { display: none; }
-  /* Full-width track (not capped at --max) so the last chip keeps its end padding when scrolled. */
+  /* Continuous marquee: two identical sets slide left by exactly one set's width, then loop. */
+  .rail-wrap {
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+            mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  }
+  .rail-track {
+    display: flex; width: max-content;
+    animation: rail-scroll 45s linear infinite;
+  }
+  .rail-wrap:hover .rail-track,
+  .rail-wrap:focus-within .rail-track { animation-play-state: paused; }
+  /* Trailing padding equals the gap so the seam between the two sets matches the chip spacing. */
   .rail {
     display: flex; gap: 10px; margin: 0; list-style: none;
-    width: max-content; min-width: 100%; box-sizing: border-box; padding-block: 4px;
-    padding-inline: max(var(--gutter), calc((100vw - var(--max)) / 2 + var(--gutter)));
+    padding: 4px 10px 4px 0;
+  }
+  @keyframes rail-scroll {
+    to { transform: translateX(-50%); }
+  }
+
+  /* No motion requested: fall back to the static, swipeable rail. */
+  @media (prefers-reduced-motion: reduce) {
+    .rail-wrap { overflow-x: auto; scrollbar-width: none; -webkit-mask-image: none; mask-image: none; }
+    .rail-wrap::-webkit-scrollbar { display: none; }
+    .rail-track { animation: none; min-width: 100%; }
+    .rail { padding-inline: max(var(--gutter), calc((100vw - var(--max)) / 2 + var(--gutter))); }
+    .rail-dup { display: none; }
   }
   .rail li {
     border-radius: var(--r-control); padding: 10px 18px;
