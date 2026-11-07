@@ -5,6 +5,21 @@ import { profile, releaseCard as rc, skillRail } from '../data/profile';
 ---
 
 <section class="hero" aria-labelledby="hero-title">
+  <!-- Decorative looping background (source: motion/hero-bg). Started by script below unless reduced motion is on. -->
+  <video
+    class="hero-bg"
+    muted
+    loop
+    playsinline
+    preload="metadata"
+    poster="/media/hero-bg-poster.jpg"
+    aria-hidden="true"
+    tabindex="-1"
+  >
+    <source src="/media/hero-bg.webm" type="video/webm" />
+    <source src="/media/hero-bg.mp4" type="video/mp4" />
+  </video>
+
   <div class="wrap hero-grid">
     <div class="hero-copy">
       <p class="label-md where">{profile.role} · {profile.location}</p>
@@ -66,8 +81,31 @@ import { profile, releaseCard as rc, skillRail } from '../data/profile';
   </div>
 </section>
 
+<script>
+  // Play the background loop only when the visitor hasn't asked for reduced motion;
+  // otherwise the poster frame stays as a still background.
+  const video = document.querySelector<HTMLVideoElement>('.hero-bg');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const sync = () => {
+    if (!video) return;
+    if (reduce.matches) video.pause();
+    else video.play().catch(() => {});
+  };
+  sync();
+  reduce.addEventListener('change', sync);
+</script>
+
 <style>
-  .hero { background: var(--hero-bg); color: var(--hero-ink); padding-bottom: 28px; }
+  .hero {
+    position: relative; isolation: isolate; overflow: hidden;
+    background: var(--hero-bg); color: var(--hero-ink); padding-bottom: 28px;
+  }
+  .hero-bg {
+    position: absolute; inset: 0; z-index: -1;
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: 70% 50%;
+    pointer-events: none;
+  }
   .hero-grid {
     display: flex; flex-wrap: wrap; align-items: center;
     gap: var(--gap) clamp(40px, 6vw, 96px);
