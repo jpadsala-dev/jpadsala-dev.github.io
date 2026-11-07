@@ -1,0 +1,133 @@
+---
+import { features } from '../data/profile';
+---
+
+<section id="features" class="section features" aria-labelledby="features-title">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow label-md">Shipped features</span>
+        <h2 id="features-title" class="headline-md">Live in production apps</h2>
+      </div>
+      <p class="body-md muted">
+        Features I've built and released to real users, across the company and client apps under Experience.
+      </p>
+    </div>
+
+    <ul class="grid" id="features-grid">
+      {
+        features.map((f) => (
+          <li class="tile">
+            <span class="tag">{f.tag}</span>
+            <h3>{f.title}</h3>
+            <p class="muted">{f.body}</p>
+          </li>
+        ))
+      }
+      <li class="tile more">
+        <h3>And more</h3>
+        <p>Plenty more shipped that I'm still writing up.</p>
+      </li>
+    </ul>
+    <!-- The list is in priority order: show the top rows, reveal the rest on demand. -->
+    <div class="toggle-row">
+      <button class="btn btn-outline show-all" type="button" aria-controls="features-grid" aria-expanded="false" hidden>
+        <span class="when-closed">Show all {features.length} features</span>
+        <span class="when-open">Show fewer</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Without JS every tile shows. With JS the grid starts collapsed to its top rows (CSS decides how many per layout).
+  const section = document.getElementById('features');
+  const grid = document.getElementById('features-grid');
+  const btn = document.querySelector<HTMLButtonElement>('#features .show-all');
+  if (section && grid && btn) {
+    grid.classList.add('collapsible');
+    btn.hidden = false;
+    btn.addEventListener('click', () => {
+      const opening = !grid.classList.contains('expanded');
+      // Remember which tile is the first hidden one before revealing, so focus can land there.
+      const firstHidden = opening
+        ? Array.from(grid.children).find((t) => getComputedStyle(t).display === 'none')
+        : undefined;
+      grid.classList.toggle('expanded', opening);
+      btn.setAttribute('aria-expanded', String(opening));
+      if (firstHidden) {
+        const h = firstHidden.querySelector('h3');
+        h?.setAttribute('tabindex', '-1');
+        h?.focus({ preventScroll: true });
+      } else if (!opening && section.getBoundingClientRect().top < 0) {
+        // Collapsing from far down the list: bring the section back into view.
+        section.scrollIntoView({ block: 'start' });
+      }
+    });
+  }
+</script>
+
+<style>
+  .features { background: var(--surface-muted); }
+
+  /* Explicit column counts so each layout can show whole rows when collapsed. */
+  .grid {
+    display: grid; gap: 16px; margin: 0; padding: 0; list-style: none;
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 600px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 900px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+  @media (min-width: 1200px) { .grid { grid-template-columns: repeat(4, 1fr); } }
+
+  /* Collapsed: 2 rows of 4, 3 rows of 3, 4 rows of 2, or 8 stacked on phones. */
+  .collapsible:not(.expanded) > .tile:nth-child(n + 9) { display: none; }
+  @media (min-width: 900px) and (max-width: 1199.98px) {
+    .collapsible:not(.expanded) > .tile:nth-child(9) { display: flex; }
+  }
+  /* Revealed tiles fade up. */
+  .expanded > .tile:nth-child(n + 9) { animation: tile-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both; }
+  @keyframes tile-in { from { opacity: 0; transform: translateY(12px); } }
+
+  .toggle-row { display: flex; justify-content: center; margin-top: 24px; }
+  .show-all[hidden] { display: none; }
+  .when-open { display: none; }
+  .show-all[aria-expanded='true'] .when-open { display: inline; }
+  .show-all[aria-expanded='true'] .when-closed { display: none; }
+
+  .tile {
+    display: flex; flex-direction: column; gap: 10px;
+    padding: 24px; border-radius: 24px;
+    background: var(--background); box-shadow: var(--hairline);
+    transition: box-shadow var(--settle), transform var(--settle);
+  }
+  .tile:hover { box-shadow: 0 0 0 1.5px var(--surface-forest); transform: translateY(-2px); }
+  .tag {
+    align-self: flex-start; padding: 5px 12px; border-radius: var(--r-control);
+    background: var(--surface-hero); color: var(--surface-forest);
+    font-size: 13px; font-weight: 600; letter-spacing: 0.1px;
+  }
+  h3 {
+    margin: 6px 0 0; font-family: var(--font-display); font-weight: 900; font-stretch: 80%;
+    font-size: 24px; line-height: 1.05;
+  }
+  .tile p { margin: 0; font-size: 16px; line-height: 1.45; }
+  .more { background: var(--surface-hero); color: var(--surface-forest); box-shadow: none; justify-content: flex-end; }
+  .more:hover { box-shadow: none; transform: none; }
+
+  /* Phones: tighter tiles and a full-width button. */
+  @media (max-width: 599.98px) {
+    .grid { gap: 10px; }
+    .tile { padding: 18px; gap: 6px; border-radius: 20px; }
+    .tag { font-size: 12px; padding: 4px 10px; }
+    h3 { font-size: 21px; margin-top: 4px; }
+    .tile p { font-size: 15px; }
+    .toggle-row { margin-top: 16px; }
+    .show-all { width: 100%; justify-content: center; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tile { transition: none; }
+    .tile:hover { transform: none; }
+    .expanded > .tile:nth-child(n + 9) { animation: none; }
+  }
+</style>

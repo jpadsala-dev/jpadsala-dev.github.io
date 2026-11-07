@@ -28,7 +28,7 @@ import { profile, releaseCard as rc, skillRail } from '../data/profile';
       <p class="body-md lead">{profile.intro}</p>
       <div class="ctas">
         <a class="btn btn-forest" href="#experience">See my experience <Icon name="arrow-right" size={18} /></a>
-        <a class="btn btn-glass" href={profile.resume} download><Icon name="download" size={18} /> Download résumé</a>
+        <a class="btn btn-glass" href={profile.resume} download><Icon name="download" size={18} /> Download resume</a>
       </div>
     </div>
 
@@ -63,8 +63,7 @@ import { profile, releaseCard as rc, skillRail } from '../data/profile';
         </div>
       </div>
 
-      <a class="btn btn-forest send" href={`mailto:${profile.email}`}><Icon name="mail" size={18} /> Email me</a>
-      <a class="card-link" href="#contact">Other ways to reach me</a>
+      <a class="btn btn-forest send" href="#contact">Get in touch <Icon name="arrow-right" size={18} /></a>
     </aside>
   </div>
 
@@ -143,7 +142,6 @@ import { profile, releaseCard as rc, skillRail } from '../data/profile';
   }
   .tick { display: inline-flex; padding: 3px; border-radius: 50%; background: var(--surface-forest); color: var(--accent-lime); margin-top: 1px; }
   .send { width: 100%; margin-top: 8px; }
-  .card-link { align-self: center; font-size: 15px; font-weight: 600; padding: 10px; }
 
   /* Continuous marquee: two identical sets slide left by exactly one set's width, then loop. */
   .rail-wrap {

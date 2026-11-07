@@ -1,52 +1,86 @@
 ---
 import Icon from './Icon.astro';
 import { profile } from '../data/profile';
+
+// Pre-filled subject so project enquiries are easy to spot in the inbox.
+const projectMail = `mailto:${profile.email}?subject=${encodeURIComponent('Project enquiry')}`;
 ---
 
 <section id="contact" class="section contact" aria-labelledby="contact-title">
   <div class="wrap">
     <span class="eyebrow label-md">Contact</span>
-    <h2 id="contact-title" class="display-lg">Need a Flutter app built, or shipped?</h2>
+    <h2 id="contact-title" class="display-lg">Let's talk Flutter</h2>
     <p class="body-md muted lead">
-      Email is the fastest way to reach me. I'm based in {profile.location}.
+      Whether it's a role or a project, email is the fastest way to reach me. I'm based in {profile.location}.
     </p>
-    <div class="actions">
-      <a class="btn btn-forest btn-xl" href={`mailto:${profile.email}`}>
-        <Icon name="mail" size={22} />
-        <span class="addr">{profile.email}</span>
-      </a>
-      <div class="secondary">
-        {
-          profile.links.linkedin && (
-            <a class="btn btn-glass" href={profile.links.linkedin} rel="me noopener" target="_blank">
-              LinkedIn <Icon name="arrow-up-right" size={16} />
-            </a>
-          )
-        }
-        {
-          profile.links.github && (
-            <a class="btn btn-glass" href={profile.links.github} rel="me noopener" target="_blank">
-              GitHub <Icon name="arrow-up-right" size={16} />
-            </a>
-          )
-        }
-        <a class="btn btn-glass" href={profile.resume} download>
-          Résumé (PDF) <Icon name="download" size={16} />
-        </a>
-      </div>
+
+    <div class="paths">
+      <article class="path" aria-labelledby="path-role">
+        <h3 id="path-role">Hiring for a role?</h3>
+        <p class="muted">My resume has the full history: teams, stack and release record.</p>
+        <div class="path-actions">
+          <a class="btn btn-forest" href={profile.resume} download>
+            <Icon name="download" size={18} /> Download resume
+          </a>
+          {
+            profile.links.linkedin && (
+              <a class="btn btn-glass" href={profile.links.linkedin} rel="me noopener" target="_blank">
+                LinkedIn <Icon name="arrow-up-right" size={16} />
+              </a>
+            )
+          }
+        </div>
+      </article>
+
+      <article class="path" aria-labelledby="path-project">
+        <h3 id="path-project">Need an app built?</h3>
+        <p class="muted">Send a short brief: what it should do, which platforms, and when you need it.</p>
+        <div class="path-actions">
+          <a class="btn btn-forest" href={projectMail}>
+            <Icon name="mail" size={18} /> Email a brief
+          </a>
+          {
+            profile.links.github && (
+              <a class="btn btn-glass" href={profile.links.github} rel="me noopener" target="_blank">
+                GitHub <Icon name="arrow-up-right" size={16} />
+              </a>
+            )
+          }
+        </div>
+      </article>
     </div>
+
+    <p class="direct">
+      Or write directly to <a href={`mailto:${profile.email}`}>{profile.email}</a>
+    </p>
   </div>
 </section>
 
 <style>
   .contact { padding-block: clamp(24px, 4vw, 56px) clamp(80px, 10vw, 140px); }
   .display-lg { max-width: 1100px; }
-  .lead { margin: 28px 0 0; }
-  .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 24px; margin-top: 44px; }
-  .btn-xl { max-width: 100%; }
-  .addr { overflow: hidden; text-overflow: ellipsis; }
-  .secondary { display: flex; flex-wrap: wrap; gap: 10px; }
+  .lead { margin: 28px 0 0; max-width: 640px; }
+
+  .paths {
+    display: grid; gap: 16px; margin-top: 44px;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr));
+  }
+  .path {
+    display: flex; flex-direction: column; gap: 12px;
+    padding: clamp(24px, 3vw, 36px); border-radius: var(--r-card);
+    background: var(--surface-muted);
+  }
+  .path h3 {
+    margin: 0; font-family: var(--font-display); font-weight: 900; font-stretch: 80%;
+    font-size: clamp(28px, 3vw, 36px); line-height: 1;
+  }
+  .path p { margin: 0; font-size: 17px; max-width: 440px; }
+  .path-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: auto; padding-top: 16px; }
+
+  .direct { margin: 28px 0 0; color: var(--text-secondary); font-size: 16px; }
+  .direct a { color: var(--text-primary); font-weight: 600; word-break: break-all; }
+
   @media (max-width: 520px) {
-    .btn-xl { width: 100%; min-height: 60px; font-size: 15px; padding-inline: 18px; }
+    .path-actions .btn { flex: 1 1 100%; }
   }
 </style>

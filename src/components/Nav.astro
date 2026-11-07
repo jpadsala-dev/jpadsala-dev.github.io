@@ -1,5 +1,6 @@
 ---
 import { profile } from '../data/profile';
+import Icon from './Icon.astro';
 
 interface Props {
   /** Links point at home-page anchors; on sub-pages prefix them with "/". */
@@ -11,6 +12,7 @@ const links = [
   { href: `${p}#work`, label: 'Work' },
   { href: `${p}#approach`, label: 'Approach' },
   { href: `${p}#experience`, label: 'Experience' },
+  { href: `${p}#features`, label: 'Features' },
   { href: `${p}#stack`, label: 'Stack' },
 ];
 ---
@@ -30,7 +32,9 @@ const links = [
       </ul>
     </nav>
     <div class="nav-actions">
-      <a class="btn btn-glass btn-sm hide-sm" href={profile.resume} download>Résumé</a>
+      <a class="btn btn-glass btn-icon" href={profile.resume} download aria-label="Download resume (PDF)" title="Download resume">
+        <Icon name="download" size={20} />
+      </a>
       <a class="btn btn-forest btn-sm" href={`${p}#contact`}>Get in touch</a>
     </div>
   </div>
@@ -101,12 +105,11 @@ const links = [
     text-decoration: none; color: var(--hero-ink);
   }
   ul a:hover { background: var(--glass); }
-  .nav-actions { display: flex; gap: 8px; }
+  .nav-actions { display: flex; align-items: center; gap: 8px; }
+  /* Round icon-only button, same 44px height as "Get in touch". */
+  .btn-icon { width: 44px; min-height: 44px; height: 44px; padding: 0; flex: none; }
 
   @media (max-width: 860px) {
     nav { display: none; }
-  }
-  @media (max-width: 420px) {
-    .hide-sm { display: none; }
   }
 </style>
