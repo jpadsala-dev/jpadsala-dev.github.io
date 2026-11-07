@@ -98,7 +98,9 @@ import { profile, releaseCard as rc, skillRail } from '../data/profile';
 <style>
   .hero {
     position: relative; isolation: isolate; overflow: hidden;
-    background: var(--hero-bg); color: var(--hero-ink); padding-bottom: 28px;
+    background: var(--hero-bg); color: var(--hero-ink);
+    padding-top: var(--nav-h); /* room for the floating header, which the video runs behind */
+    padding-bottom: 28px;
   }
   .hero-bg {
     position: absolute; inset: 0; z-index: -1;
