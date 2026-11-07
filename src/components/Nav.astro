@@ -17,7 +17,13 @@ const links = [
 
 <header class="nav">
   <div class="wrap nav-inner">
-    <a class="wordmark" href="/" aria-label={`${profile.name}, home`}>jp</a>
+    <a class="wordmark" href="/" aria-label={`${profile.name}, home`}>
+      <!-- "JP" by default; each initial unrolls into its word (J→Jay, P→Padsala) once .show-name is on. -->
+      <span class="wm" aria-hidden="true"
+        >J<span class="unroll"><span>ay</span></span><span class="unroll gap"><span>&nbsp;</span></span
+        >P<span class="unroll late"><span>adsala</span></span></span
+      >
+    </a>
     <nav aria-label="Primary">
       <ul>
         {links.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
@@ -29,14 +35,64 @@ const links = [
     </div>
   </div>
 </header>
+<!-- The header floats (fixed). On the home page the hero sits underneath it; other pages need the space back. -->
+{!home && <div class="nav-spacer" aria-hidden="true"></div>}
+
+<script>
+  // Transparent over the hero; frosted once the page scrolls.
+  // Once the first section after the hero (#work) reaches the header, "jp" becomes the full name.
+  const nav = document.querySelector<HTMLElement>('.nav');
+  const work = document.getElementById('work');
+  const update = () => {
+    if (!nav) return;
+    nav.classList.toggle('is-scrolled', window.scrollY > 8);
+    const navH = nav.offsetHeight;
+    nav.classList.toggle('show-name', !!work && work.getBoundingClientRect().top <= navH);
+  };
+  update();
+  window.addEventListener('scroll', update, { passive: true });
+</script>
 
 <style>
-  .nav { background: var(--hero-bg); }
-  .nav-inner { display: flex; align-items: center; gap: 24px; min-height: 84px; }
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+    background: transparent;
+    transition: background-color var(--settle), box-shadow var(--settle);
+  }
+  .nav.is-scrolled {
+    background: rgba(159, 232, 112, 0.82); /* --surface-hero at 82% */
+    -webkit-backdrop-filter: blur(14px) saturate(1.2);
+            backdrop-filter: blur(14px) saturate(1.2);
+    box-shadow: 0 1px 0 rgba(22, 51, 0, 0.12);
+  }
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .nav.is-scrolled { background: var(--hero-bg); }
+  }
+  .nav-spacer { height: var(--nav-h); }
+  .nav-inner { display: flex; align-items: center; gap: 24px; min-height: var(--nav-h); }
   .wordmark {
     font-family: var(--font-display); font-weight: 900; font-stretch: 75%;
     font-size: clamp(26px, 2.2vw, 32px); line-height: 1; letter-spacing: -0.005em; text-decoration: none;
     color: var(--hero-ink); margin-right: auto;
+    white-space: nowrap;
+  }
+  /* Left-to-right reveal: each tail sits in a one-column grid whose track grows from 0fr to 1fr,
+     so its letters are uncovered from the left as the box widens. */
+  .wm { display: inline-flex; align-items: baseline; }
+  .unroll {
+    display: inline-grid; grid-template-columns: 0fr;
+    transition: grid-template-columns 0.6s cubic-bezier(0.22, 1, 0.36, 1); /* ease-out: starts moving at once */
+  }
+  .unroll > span {
+    min-width: 0; overflow-x: clip; overflow-y: visible; /* clip sideways only, so the "y" descender survives */
+    opacity: 0; transition: opacity 0.4s ease;
+  }
+  .late { transition-delay: 0.12s; }
+  .late > span { transition-delay: 0.12s; }
+  .show-name .unroll { grid-template-columns: 1fr; }
+  .show-name .unroll > span { opacity: 1; }
+  @media (prefers-reduced-motion: reduce) {
+    .unroll, .unroll > span { transition: none; }
   }
   ul { display: flex; gap: 4px; margin: 0; padding: 0; list-style: none; }
   ul a {
