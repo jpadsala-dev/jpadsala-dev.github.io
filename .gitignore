@@ -9,9 +9,5 @@ dist/
 # Master résumé contains a phone number — keep it local. The public copy is public/jay-padsala-resume.pdf
 Jay Padsala - Flutter Developer Resume.pdf
 
-# HyperFrames build output (source is motion/*/index.html; web copies live in public/media)
-motion/*/renders/
-motion/*/.hyperframes/
-
 # Claude Code worktrees
 .claude/worktrees/
