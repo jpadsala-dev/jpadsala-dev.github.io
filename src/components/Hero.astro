@@ -85,13 +85,53 @@ import { profile, releaseCard as rc, skillRail } from '../data/profile';
   // otherwise the poster frame stays as a still background.
   const video = document.querySelector<HTMLVideoElement>('.hero-bg');
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  // A frame where the phone outline is fully drawn (it fades in ~2s and out ~10s of the 12s loop).
+  const STILL_AT = 6;
   const sync = () => {
     if (!video) return;
-    if (reduce.matches) video.pause();
-    else video.play().catch(() => {});
+    if (reduce.matches) {
+      // Hold a still frame with the phone instead of the phone-less poster. Browsers keep showing
+      // the poster until playback has started once, so start it and pause straight away.
+      video.currentTime = STILL_AT;
+      video.play().then(() => { video.pause(); video.currentTime = STILL_AT; }).catch(() => video.pause());
+    } else video.play().catch(() => {});
   };
   sync();
   reduce.addEventListener('change', sync);
+
+  // Side-by-side layout: scale and move the video so its phone outline frames the "At a glance" card.
+  // The card keeps its place in the layout; the video follows it. Stacked layouts keep the plain cover fit.
+  const hero = document.querySelector<HTMLElement>('.hero');
+  const card = document.querySelector<HTMLElement>('.hero .card');
+  const VIDEO = { w: 1920, h: 1080 };
+  // Phone's screen area inside the outline, in video pixels. The outline's stroke runs x 1293–1686,
+  // y 153–926 with ~58px corner radius; the screen sits 20px inside it, so r = 58 − 20 keeps the corners concentric.
+  const SCREEN = { x: 1313, y: 212, w: 353, r: 38 };
+  const wide = window.matchMedia('(min-width: 360px)'); // keep in sync with the CSS breakpoint for the framed card
+  const frame = () => {
+    if (!video || !hero || !card) return;
+    if (!wide.matches) {
+      hero.classList.remove('is-framed');
+      video.style.removeProperty('width'); video.style.removeProperty('height');
+      video.style.removeProperty('left'); video.style.removeProperty('top');
+      return;
+    }
+    hero.classList.add('is-framed');
+    const h = hero.getBoundingClientRect();
+    const c = card.getBoundingClientRect();
+    const s = c.width / SCREEN.w;
+    video.style.width = `${VIDEO.w * s}px`;
+    video.style.height = `${VIDEO.h * s}px`;
+    video.style.left = `${c.left - h.left - SCREEN.x * s}px`;
+    video.style.top = `${c.top - h.top - SCREEN.y * s}px`;
+    card.style.setProperty('--screen-r', `${SCREEN.r * s}px`);
+  };
+  if (hero && card) {
+    new ResizeObserver(frame).observe(hero);
+    new ResizeObserver(frame).observe(card);
+    wide.addEventListener('change', frame);
+    frame();
+  }
 </script>
 
 <style>
@@ -177,8 +217,45 @@ import { profile, releaseCard as rc, skillRail } from '../data/profile';
     background: var(--hero-chip-bg); font-weight: 600; font-size: 15px; white-space: nowrap;
   }
 
-  @media (max-width: 480px) {
-    .card { padding: 16px; }
+  /* 360px and up: the card becomes the phone's screen (the script sizes the video around it).
+     Narrower than that there's no room for the phone around a readable card, so it stays a plain card. */
+  @media (min-width: 360px) {
+    .card {
+      flex: none; width: clamp(320px, 18vw, 340px);
+      aspect-ratio: 353 / 694; /* the phone screen's proportions in the video (20px inside the outline) */
+      border-radius: var(--screen-r, 34px);
+      padding: 20px 18px;
+    }
+    .row { padding: 12px 14px; gap: 10px; }
+    .row:first-child .row-value { white-space: nowrap; } /* keep "iOS + Android" on one line */
+    .row-note { display: none; } /* too narrow for the side note inside the phone */
+    .send { margin-top: auto; }
+    /* Once the video is scaled to fit the phone it may not reach every edge; fade its edges into the hero colour. */
+    .is-framed .hero-bg {
+      inset: auto; object-fit: fill;
+      -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent), linear-gradient(transparent, #000 8%, #000 92%, transparent);
+      -webkit-mask-composite: source-in;
+              mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent), linear-gradient(transparent, #000 8%, #000 92%, transparent);
+              mask-composite: intersect;
+    }
+  }
+  /* Side by side from 1024px. */
+  @media (min-width: 1024px) {
+    .hero-grid { flex-wrap: nowrap; }
+  }
+  /* Stacked: copy, then the card. The phone is centred so its outline never runs off the screen edge. */
+  @media (max-width: 1023px) {
+    .hero-grid { flex-direction: column; align-items: stretch; }
+    .hero-copy, .card { flex: none; }
+    .card { align-self: center; }
+  }
+  /* Stacked + framed: the phone outline rises ~53px above the card, so leave room for it below the buttons. */
+  @media (min-width: 360px) and (max-width: 1023px) {
+    .hero-grid { row-gap: 80px; }
+  }
+  /* Plain full-width card on the narrowest screens. */
+  @media (max-width: 359px) {
+    .card { align-self: stretch; padding: 16px; }
     .row-note { display: none; }
   }
 </style>
