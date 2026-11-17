@@ -37,9 +37,9 @@ import { principles, releaseCard as rc } from '../data/profile';
 
 <style>
   .approach { background: var(--surface-muted); }
-  .grid { display: flex; flex-wrap: wrap; gap: var(--gap) clamp(40px, 6vw, 96px); align-items: flex-start; }
+  .grid { display: flex; gap: var(--gap) clamp(40px, 6vw, 96px); align-items: flex-start; }
   .media {
-    position: sticky; top: 32px; flex: 1 1 420px; min-width: 0; min-height: clamp(300px, 34vw, 440px); container-type: inline-size;
+    position: sticky; top: calc(var(--nav-h) + 24px); /* clear the fixed header */ flex: 1 1 420px; min-width: 0; min-height: clamp(300px, 34vw, 440px); container-type: inline-size;
     display: flex; flex-direction: column; justify-content: flex-end; gap: 12px;
     padding: clamp(28px, 4vw, 48px); border-radius: 24px;
     background: var(--hero-bg); color: var(--hero-ink); overflow: hidden;
@@ -61,4 +61,13 @@ import { principles, releaseCard as rc } from '../data/profile';
   .ok { color: var(--accent-positive); flex: none; margin-top: 2px; }
   h3 { margin: 0 0 6px; font-size: 19px; font-weight: 600; line-height: 1.3; }
   .list p { margin: 0; font-size: 16px; }
+
+  /* Stacked layout: a pinned card would cover the list scrolling under it, so it scrolls normally.
+     Kept last so it overrides the base .media/.copy rules above. */
+  @media (max-width: 1067px) {
+    .grid { flex-direction: column; align-items: stretch; }
+    .media, .copy { flex: none; }
+    /* relative (not static) so the badge stays inside; top reset so the sticky offset doesn't push it down */
+    .media { position: relative; top: auto; }
+  }
 </style>
