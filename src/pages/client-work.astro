@@ -1,0 +1,130 @@
+---
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import Icon from '../components/Icon.astro';
+import { clientWork, otherClientWork } from '../data/clientWork';
+---
+
+<Base
+  title="Company & client work — Jay Padsala"
+  description="Case studies of production Flutter apps built for employers and their clients: Shuffleburn, Flient, PickupBuddy, ELIM and Sentinelle."
+>
+  <Nav home={false} />
+  <main id="main">
+    <section class="head">
+      <div class="wrap">
+        <a class="back label-md" href="/#experience">← Experience</a>
+        <p class="label-md meta">Case studies</p>
+        <h1 class="display-lg">Company &amp; client work</h1>
+        <p class="body-md lead">
+          Production apps I built as an employee, for my employers and their clients. My resume lists
+          them in a line each; this page has the detail.
+        </p>
+        <nav class="toc" aria-label="Apps on this page">
+          <ul>
+            {clientWork.map((a) => <li><a href={`#${a.id}`}>{a.name}</a></li>)}
+            <li><a href="#more">More</a></li>
+          </ul>
+        </nav>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <ol class="apps">
+          {
+            clientWork.map((a) => (
+              <li class="app" id={a.id}>
+                <div class="side">
+                  <p class="label-md muted">{a.kind}</p>
+                  <h2 class="headline-md">{a.name}</h2>
+                  <ul class="chips">{a.stack.map((s) => <li>{s}</li>)}</ul>
+                  {a.playStore && (
+                    <a class="btn btn-outline btn-sm store" href={a.playStore} target="_blank" rel="noopener">
+                      Google Play <Icon name="arrow-up-right" size={16} />
+                    </a>
+                  )}
+                </div>
+                <div class="main">
+                  <p class="body-md">{a.summary}</p>
+                  <p class="role"><strong>My part:</strong> {a.role}</p>
+                  <ul class="hl">
+                    {a.highlights.map((h) => (
+                      <li>
+                        <span class="ok"><Icon name="check" size={20} /></span>
+                        {h}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </li>
+            ))
+          }
+          <li class="app" id="more">
+            <div class="side">
+              <p class="label-md muted">Also</p>
+              <h2 class="headline-md">More production apps</h2>
+            </div>
+            <div class="main">
+              <ul class="hl">
+                {otherClientWork.map((o) => (
+                  <li>
+                    <span class="ok"><Icon name="check" size={20} /></span>
+                    <span><strong>{o.name}</strong>: {o.kind}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </li>
+        </ol>
+
+        <div class="foot">
+          <p class="body-md muted">The full history, with teams and dates, is in my resume.</p>
+          <a class="btn btn-forest" href="/jay-padsala-resume.pdf" download>
+            <Icon name="download" size={18} /> Download resume
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Base>
+
+<style>
+  .head { background: var(--hero-bg); color: var(--hero-ink); padding-block: 40px clamp(48px, 6vw, 72px); }
+  .back { display: inline-flex; align-items: center; min-height: 44px; text-decoration: none; }
+  .meta { margin: 32px 0 20px; }
+  .lead { margin: 24px 0 0; max-width: 680px; }
+  .toc ul { display: flex; flex-wrap: wrap; gap: 8px; margin: 32px 0 0; padding: 0; list-style: none; }
+  .toc a {
+    display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px;
+    border-radius: var(--r-control); background: var(--hero-chip-bg); color: inherit;
+    font-weight: 600; text-decoration: none;
+  }
+  .toc a:hover { background: #fff; }
+
+  .apps { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--rule); }
+  .app {
+    display: flex; flex-wrap: wrap; gap: 24px clamp(24px, 5vw, 80px);
+    padding: 48px 0; border-bottom: 1px solid var(--rule); scroll-margin-top: 96px;
+  }
+  .side { flex: 1 1 280px; display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
+  .side p, .side h2 { margin: 0; }
+  .main { flex: 999 1 520px; min-width: 0; max-width: 760px; }
+  .main > .body-md { margin: 0; }
+  .role { margin: 16px 0 8px; font-size: 17px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 4px 0 0; padding: 0; list-style: none; }
+  .chips li { padding: 6px 12px; border-radius: var(--r-control); background: var(--glass); font-weight: 600; font-size: 14px; }
+  .store { margin-top: 8px; }
+  .hl { margin: 0; padding: 0; list-style: none; }
+  .hl li { display: flex; gap: 12px; padding: 14px 0; border-top: 1px solid var(--rule); font-size: 17px; line-height: 1.5; }
+  .hl li:first-child { border-top: 0; }
+  .ok { color: var(--accent-positive); flex: none; margin-top: 2px; }
+
+  .foot {
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px 40px;
+    margin-top: 56px; padding: clamp(24px, 4vw, 40px); background: var(--surface-muted); border-radius: var(--r-card);
+  }
+  .foot p { margin: 0; }
+</style>
