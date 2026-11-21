@@ -7,6 +7,7 @@ export const profile = {
   location: 'Surat, Gujarat, India',
   email: 'jpadsala.developer@gmail.com',
   resume: '/jay-padsala-resume.pdf',
+  resumeFileName: 'Jay Padsala Senior Flutter Developer.pdf', // name the browser saves it as
   links: {
     linkedin: 'https://linkedin.com/in/jay-padsala',
     github: '', // add your GitHub profile URL to show the link
