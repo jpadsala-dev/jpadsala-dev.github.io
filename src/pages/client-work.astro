@@ -4,6 +4,7 @@ import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import Icon from '../components/Icon.astro';
 import { clientWork, otherClientWork } from '../data/clientWork';
+import { profile } from '../data/profile';
 ---
 
 <Base
@@ -40,10 +41,19 @@ import { clientWork, otherClientWork } from '../data/clientWork';
                   <p class="label-md muted">{a.kind}</p>
                   <h2 class="headline-md">{a.name}</h2>
                   <ul class="chips">{a.stack.map((s) => <li>{s}</li>)}</ul>
-                  {a.playStore && (
-                    <a class="btn btn-outline btn-sm store" href={a.playStore} target="_blank" rel="noopener">
-                      Google Play <Icon name="arrow-up-right" size={16} />
-                    </a>
+                  {(a.playStore || a.appStore) && (
+                    <div class="stores">
+                      {a.playStore && (
+                        <a class="btn btn-outline btn-sm" href={a.playStore} target="_blank" rel="noopener">
+                          Google Play <Icon name="arrow-up-right" size={16} />
+                        </a>
+                      )}
+                      {a.appStore && (
+                        <a class="btn btn-outline btn-sm" href={a.appStore} target="_blank" rel="noopener">
+                          App Store <Icon name="arrow-up-right" size={16} />
+                        </a>
+                      )}
+                    </div>
                   )}
                 </div>
                 <div class="main">
@@ -81,7 +91,7 @@ import { clientWork, otherClientWork } from '../data/clientWork';
 
         <div class="foot">
           <p class="body-md muted">The full history, with teams and dates, is in my resume.</p>
-          <a class="btn btn-forest" href="/jay-padsala-resume.pdf" download>
+          <a class="btn btn-forest" href={profile.resume} download={profile.resumeFileName}>
             <Icon name="download" size={18} /> Download resume
           </a>
         </div>
@@ -116,7 +126,7 @@ import { clientWork, otherClientWork } from '../data/clientWork';
   .role { margin: 16px 0 8px; font-size: 17px; }
   .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 4px 0 0; padding: 0; list-style: none; }
   .chips li { padding: 6px 12px; border-radius: var(--r-control); background: var(--glass); font-weight: 600; font-size: 14px; }
-  .store { margin-top: 8px; }
+  .stores { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
   .hl { margin: 0; padding: 0; list-style: none; }
   .hl li { display: flex; gap: 12px; padding: 14px 0; border-top: 1px solid var(--rule); font-size: 17px; line-height: 1.5; }
   .hl li:first-child { border-top: 0; }

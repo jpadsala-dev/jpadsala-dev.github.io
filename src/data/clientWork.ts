@@ -45,6 +45,7 @@ export const clientWork: ClientApp[] = [
       'Single-session user management for secure access across devices.',
     ],
     playStore: 'https://play.google.com/store/apps/details?id=com.flient.app',
+    appStore: 'https://apps.apple.com/in/app/flient/id6746534836',
   },
   {
     id: 'pickupbuddy',
@@ -74,6 +75,7 @@ export const clientWork: ClientApp[] = [
       'RxDart to manage audio playback and real-time data streams together.',
     ],
     playStore: 'https://play.google.com/store/apps/details?id=com.radios.elim.app',
+    appStore: 'https://apps.apple.com/in/app/radios-elim/id6502156622',
   },
   {
     id: 'sentinelle',
@@ -85,6 +87,7 @@ export const clientWork: ClientApp[] = [
     role: 'Built the Flutter app.',
     highlights: ['Transaction history.', 'Portfolio movement views.', 'Market data.'],
     playStore: 'https://play.google.com/store/apps/details?id=com.sentinellemobile.app',
+    appStore: 'https://apps.apple.com/in/app/sentinelle-bourse-insiders/id6769673763',
   },
 ];
 
