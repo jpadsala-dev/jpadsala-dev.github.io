@@ -23,7 +23,7 @@ Requires Node 22+. Astro is pinned to v5 because Astro 6 needs Node ≥ 22.23.4.
 | **Personal** demo projects | `src/data/projects.ts` |
 | Design tokens + type scale + buttons | `src/styles/global.css` |
 | Sections | `src/components/*.astro` |
-| Downloadable résumé | `public/jay-padsala-resume.pdf` |
+| Downloadable résumé | `public/Jay Padsala Senior Flutter Developer.pdf` |
 
 ## Adding a personal project
 

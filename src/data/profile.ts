@@ -6,7 +6,7 @@ export const profile = {
   role: 'Flutter Developer',
   location: 'Surat, Gujarat, India',
   email: 'jpadsala.developer@gmail.com',
-  resume: '/jay-padsala-resume.pdf',
+  resume: '/Jay%20Padsala%20Senior%20Flutter%20Developer.pdf',
   resumeFileName: 'Jay Padsala Senior Flutter Developer.pdf', // name the browser saves it as
   links: {
     linkedin: 'https://linkedin.com/in/jay-padsala',
